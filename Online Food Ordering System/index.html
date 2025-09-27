@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FoodieHub - Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="top-bar">
+        </div>
+
+        <nav class="nav-bar">
+            <a href="index.html">Home</a>
+            <a href="#about">About Us</a>
+
+            <div class="dropdown">
+                <a href="#">Products ⌄</a>
+                <div class="dropdown-content">
+                    <a href="#Fast_Food">🍔 Fast Food</a>
+                    <a href="#Pizzas">🍕 Pizzas</a>
+                    <a href="#Desi_Dishes">🍜 Desi Dishes</a>
+                    <a href="#Drinks">🍹 Drinks</a>
+                </div>
+            </div>
+
+            <a href="#contact">Contact Us</a>
+
+            <div class="icons">
+
+                <span class="search-icon"><input type="text" id="searchInput" class="search-input"
+                        placeholder="Search..." /> 🔍</span>
+
+                <!-- Cart Button -->
+                <span><button onclick="showCartSidebar()" title="View Cart">🛒</button></span>
+
+                <!-- Cart Sidebar -->
+                <div id="cartSidebar" class="cart-sidebar">
+                    <h3>Your Cart</h3>
+                    <ul id="cartItems"></ul>
+                    <p><strong>Total Items:</strong> <span id="totalItems">0</span></p>
+                    <p><strong>Total Price:</strong> <span id="totalPrice">0</span>
+                        tk</p>
+                    <button onclick="showOrderForm()">Confirm Order</button>
+                    <button onclick="closeCartSidebar()">Close</button>
+                </div>
+
+                <!-- Hidden Order Form -->
+                <div id="Delivery_Details" class="Delivery_Details">
+                    <div id="orderForm" class="order-form">
+                        <h4>Enter Delivery Details</h4>
+                        <input type="text" id="customerName" placeholder="Your Name" required class="input_D">
+                        <input type="text" id="customerAddress" placeholder="Your Address" required class="input_D">
+                        <input type="text" id="customerPhone" placeholder="Phone Number" required class="input_D">
+
+                        <!-- <button onclick="confirmOrder()">Submit Order</button> -->
+                        <button onclick="finalConfirmOrder()">Submit
+                            Order</button>
+                        <button onclick="closeCartSidebar()" class="close">Close</button>
+                    </div>
+                </div>
+
+                <!-- Popup Message -->
+                <div id="orderPopup" class="popup">
+                    <div class="popup-content">
+                        <h2>🎉 Congratulations!</h2>
+                        <p>Thank you for your order today.</p>
+                        <button onclick="closePopup()">Close</button>
+                    </div>
+                </div>
+
+                <!-- 🔘 Login button -->
+                <span><button onclick="openLogin()" title="Login" id="loginbutton">👤</button></span>
+                <span id="userDisplay" style="display:none; font-weight:bold; margin-left:10px;"></span>
+                <!-- 🔐 LOGIN POPUP -->
+                <div id="loginPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closeLogin()">×</span>
+                        <h2>Login</h2>
+
+                        <form id="loginForm" onsubmit="handleLogin(event)">
+                            <input type="text" id="loginUsername" name="username" placeholder="Username" required>
+                            <div class="password-toggle">
+                                <input type="password" id="loginPassword" placeholder="Password" required>
+                                <span onclick="togglePassword('loginPassword')">👁️</span>
+                            </div>
+
+                            <button type="submit">Login</button>
+
+                            <p ><a href="javascript:void(0);" onclick="openForgotPassword()"> <br>Forgot Password? </a>
+                            </p>
+                            <p><a href="javascript:void(0);" onclick="openRegister()"><br>Don't have an account?
+                                    Register</a></p>
+                        </form>
+
+
+                    </div>
+                </div>
+
+                <!-- 📝 REGISTER POPUP -->
+                <div id="registerPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closeRegister()">×</span>
+                        <h2>Register</h2>
+                        <form id="registerForm" onsubmit="handleRegister(event)">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="name" placeholder="Full Name" required>
+                            <input type="text" id="username" name="username" placeholder="Username" required>
+                            <input type="email" id="gmail" name="gmail" placeholder="Gmail" required>
+                            <input type="password" id="password" name="password" placeholder="Password" required>
+                            <input type="text" id="address" name="address" placeholder="Address" required>
+                            <input type="text" id="phone" name="phone" placeholder="Phone Number" required>
+                            <button type="submit">Register</button>
+                        </form>
+                        <p class="centered-link">Already have an account? <a onclick="openLogin()">Login</a></p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 📝 FORGOT PASSWORD POPUP -->
+            <div id="forgotPopup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn" onclick="closeForgotPassword()">×</span>
+                    <h2>Forgot Password</h2>
+                    <form onsubmit="handleForgotPassword(event)">
+                        <input type="email" id="forgotEmail" placeholder="Enter your Gmail" required>
+                        <button type="button" onclick="sendResetCode()">Send Code</button>
+                        <input type="text" id="resetCode" placeholder="Enter received code" required>
+                        <input type="password" id="newPassword" placeholder="Enter new password" required>
+                        <button type="submit">Reset Password</button>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- 👤 USER INFO SIDEBAR -->
+            <div id="userSidebar" class="user-sidebar">
+                <div class="user-sidebar-header">
+                    <h3>User Info</h3>
+                    <button onclick="closeUserSidebar()" class="close-btn">×</button>
+                </div>
+                <div id="userInfoView">
+                    <p><strong>Name:</strong> <span id="viewFullName"></span></p>
+                    <p><strong>Username:</strong> <span id="viewUsername"></span></p>
+                    <p><strong>Email:</strong> <span id="viewGmail"></span></p>
+                    <p><strong>Address:</strong> <span id="viewAddress"></span></p>
+                    <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
+                    <button onclick="editUserInfo()">Edit</button>
+                    <button onclick="logout()" id="Logout">Logout</button>
+                </div>
+
+                <!-- Editable form -->
+                <form id="userInfoEditForm" style="display:none;" onsubmit="saveUserInfo(event)">
+                    <input type="text" id="editFullName" placeholder="Full Name" required>
+                    <input type="text" id="editUsername" placeholder="Username" required>
+                    <input type="email" id="editGmail" placeholder="Gmail" required>
+                    <input type="text" id="editAddress" placeholder="Address" required>
+                    <input type="tel" id="editPhone" placeholder="Phone" required>
+                    <button type="submit">Save</button>
+                    <button type="button" onclick="cancelEdit()">Cancel</button>
+                </form>
+            </div>
+
+            </div>
+        </nav>
+
+    </header>
+
+    <main>
+
+        <section class="hero-banner" id="heroBanner">
+            <div class="slider-track">
+                <img src="pic/1.jpeg" alt="Food 1">
+                <img src="pic/Hot Dog.jpeg" alt="Food 5">
+                <img src="pic/Beef Khichuri.jpeg" alt="Food 6">
+                <img src="pic/Vanilla Ice Cream.jpeg" alt="Food 7">
+                <img src="pic/2.avif" alt="Food 2">
+                <img src="pic/Iced Tea.jpeg" alt="Food 8">
+                <img src="pic/Cheese Burger.webp" alt="Food 9">
+                <img src="pic/Chicken BBQ Pizza.jpeg" alt="Food 10">
+                <img src="pic/3.webp" alt="Food 3">
+                <img src="pic/Zinger Burger.jpeg" alt="Food 11">
+                <img src="pic/Egg Curry.jpeg" alt="Food 12">
+                <img src="pic/4.avif" alt="Food 4">
+
+            </div>
+        </section>
+
+        <section class="food_item" id="itemList">
+            <!-- 🍔 Fast Food -->
+            <div class="food">
+                <img src="pic/Zinger Burger.jpeg" alt="Zinger Burger">
+                <h3>Zinger Burger</h3>
+                <p>BD : 140 tk</p>
+                <button onclick="addToCart('Zinger Burger')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Cheese Sandwich.jpeg" alt="Cheese Sandwich">
+                <h3>Cheese Sandwich</h3>
+                <p>BD : 80 tk</p>
+                <button onclick="addToCart('Cheese Sandwich')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Hot Dog.jpeg" alt="Hot Dog">
+                <h3>Hot Dog</h3>
+                <p>BD : 100 tk</p>
+                <button onclick="addToCart('Hot Dog')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Chicken Nuggets.jpg" alt="Chicken Nuggets">
+                <h3>Chicken Nuggets</h3>
+                <p>BD : 90 tk</p>
+                <button onclick="addToCart('Chicken Nuggets')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Loaded Fries.jpeg" alt="Loaded Fries">
+                <h3>Loaded Fries</h3>
+                <p>BD : 110 tk</p>
+                <button onclick="addToCart('Loaded Fries')">Add to Cart</button>
+            </div>
+            <!-- 🍕 Pizzas -->
+            <div class="food">
+                <img src="pic/Margherita Pizza.webp" alt="Margherita Pizza">
+                <h3>Margherita Pizza</h3>
+                <p>BD : 220 tk</p>
+                <button onclick="addToCart('Margherita Pizza')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Chicken BBQ Pizza.jpeg" alt="Chicken BBQ Pizza">
+                <h3>Chicken BBQ Pizza</h3>
+                <p>BD : 260 tk</p>
+                <button onclick="addToCart('Chicken BBQ Pizza')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Spicy Sausage Pizza.jpeg" alt="Spicy Sausage Pizza">
+                <h3>Spicy Sausage Pizza</h3>
+                <p>BD : 250 tk</p>
+                <button onclick="addToCart('Spicy Sausage Pizza')">Add to
+                    Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Veggie Delight Pizza.jpeg" alt="Veggie Delight Pizza">
+                <h3>Veggie Delight Pizza</h3>
+                <p>BD : 200 tk</p>
+                <button onclick="addToCart('Veggie Delight Pizza')">Add to
+                    Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Four Cheese Pizza.jpeg" alt="Four Cheese Pizza">
+                <h3>Four Cheese Pizza</h3>
+                <p>BD : 270 tk</p>
+                <button onclick="addToCart('Four Cheese Pizza')">Add to Cart</button>
+            </div>
+
+            <!-- 🍜 Desi Dishes -->
+            <div class="food">
+                <img src="pic/Chicken Biryani.webp" alt="Chicken Biryani">
+                <h3>Chicken Biryani</h3>
+                <p>BD : 180 tk</p>
+                <button onclick="addToCart('Chicken Biryani')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Beef Khichuri.jpeg" alt="Beef Khichuri">
+                <h3>Beef Khichuri</h3>
+                <p>BD : 170 tk</p>
+                <button onclick="addToCart('Beef Khichuri')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Egg Curry.jpeg" alt="Egg Curry">
+                <h3>Egg Curry</h3>
+                <p>BD : 90 tk</p>
+                <button onclick="addToCart('Egg Curry')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Paratha with Vegetable.jpeg" alt="Paratha with Vegetable">
+                <h3>Paratha with Vegetable</h3>
+                <p>BD : 60 tk</p>
+                <button onclick="addToCart('Paratha with Vegetable')">Add to
+                    Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Grilled Chicken Roti Roll.jpeg" alt="Grilled Chicken Roti Roll">
+                <h3>Grilled Chicken Roti Roll</h3>
+                <p>BD : 100 tk</p>
+                <button onclick="addToCart('Grilled Chicken Roti Roll')">Add to
+                    Cart</button>
+            </div>
+
+            <!-- 🍰 Desserts -->
+            <div class="food">
+                <img src="pic/Vanilla Ice Cream.jpeg" alt="Vanilla Ice Cream">
+                <h3>Vanilla Ice Cream</h3>
+                <p>BD : 70 tk</p>
+                <button onclick="addToCart('Vanilla Ice Cream')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Brownie with Ice Cream.jpeg" alt="Brownie with Ice Cream">
+                <h3>Brownie with Ice Cream</h3>
+                <p>BD : 120 tk</p>
+                <button onclick="addToCart('Brownie with Ice Cream')">Add to
+                    Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Strawberry Sundae.jpeg" alt="Strawberry Sundae">
+                <h3>Strawberry Sundae</h3>
+                <p>BD : 90 tk</p>
+                <button onclick="addToCart('Strawberry Sundae')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Gulab Jamun.jpeg" alt="Gulab Jamun">
+                <h3>Gulab Jamun</h3>
+                <p>BD : 50 tk</p>
+                <button onclick="addToCart('Gulab Jamun')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Rasmalai.jpeg" alt="Rasmalai">
+                <h3>Rasmalai</h3>
+                <p>BD : 60 tk</p>
+                <button onclick="addToCart('Rasmalai')">Add to Cart</button>
+            </div>
+
+            <!-- 🍹 Drinks -->
+            <div class="food">
+                <img src="pic/Cold Coffee.webp" alt="Cold Coffee">
+                <h3>Cold Coffee</h3>
+                <p>BD : 100 tk</p>
+                <button onclick="addToCart('Cold Coffee')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Lemon Mint Juice.jpeg" alt="Lemon Mint Juice">
+                <h3>Lemon Mint Juice</h3>
+                <p>BD : 80 tk</p>
+                <button onclick="addToCart('Lemon Mint Juice')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Watermelon Juice.jpeg" alt="Watermelon Juice">
+                <h3>Watermelon Juice</h3>
+                <p>BD : 90 tk</p>
+                <button onclick="addToCart('Watermelon Juice')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Chocolate Milkshake.jpeg" alt="Chocolate Milkshake">
+                <h3>Chocolate Milkshake</h3>
+                <p>BD : 110 tk</p>
+                <button onclick="addToCart('Chocolate Milkshake')">Add to
+                    Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Iced Tea.jpeg" alt="Iced Tea">
+                <h3>Iced Tea</h3>
+                <p>BD : 70 tk</p>
+                <button onclick="addToCart('Iced Tea')">Add to Cart</button>
+            </div>
+
+            <div class="food">
+                <img src="pic/Burger.jpeg" alt="Burger">
+                <h3>Cheese Burger</h3>
+                <p>BD : 130 tk</p>
+                <button onclick="addToCart('Cheese Burger')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Chicken_Pizza.jpeg" alt="Pizza">
+                <h3>Chicken Pizza</h3>
+                <p>BD : 120 tk</p>
+                <button onclick="addToCart('Chicken Pizza')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Spicy_Noodles.jpeg" alt="Noodles">
+                <h3>Spicy Noodles</h3>
+                <p>BD : 90 tk</p>
+                <button onclick="addToCart('Spicy Noodles')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Italian_Pasta" alt="Pasta">
+                <h3>Italian Pasta</h3>
+                <p>BD : 110 tk</p>
+                <button onclick="addToCart('Italian Pasta')">Add to Cart</button>
+            </div>
+            <div class="food">
+                <img src="pic/Sushi_Set.jpeg" alt="Sushi">
+                <h3>Sushi Set</h3>
+                <p> BD : 70 tk</p>
+                <button onclick="addToCart('Sushi Set')">Add to Cart</button>
+            </div>
+        </section>
+
+
+        <section class="about" id="about">
+            <div class="about-content">
+                <h2>About FoodieHub</h2>
+                <p>
+                    Welcome to <strong>FoodieHub</strong> – your favorite
+                    online food
+                    ordering platform that brings hot, fresh,
+                    and flavorful meals straight to your door.
+                </p>
+                <p>
+                    At FoodieHub, we believe food is more than just a meal –
+                    it’s an
+                    experience. From cheesy burgers and spicy
+                    noodles to sweet desserts, we offer a wide range of
+                    dishes to suit
+                    every craving.
+                </p>
+                <p>
+                    We partner with the best local restaurants and chefs to
+                    ensure
+                    quality and taste, all while offering great
+                    value through combos, discounts, and gift sets.
+                </p>
+                <p>
+                    Fast delivery, user-friendly service, and a passion for
+                    food make us
+                    your go-to hub for every occasion.
+                    Whether it's lunch, dinner, or a midnight snack –
+                    FoodieHub is here
+                    for you!
+                </p>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="contact-content">
+                <h2>Contact Us</h2>
+                <p>Have questions, suggestions, or feedback? We'd love to
+                    hear from
+                    you!</p>
+
+                <div class="contact-info">
+                    <p><strong>Email:</strong> <a href="mailto:support@mahin.com">support@mahin.com</a></p>
+                    <p><strong>Phone:</strong> <a href="phone:+8801722294727">+8801722294727</a></p>
+                    <p><strong>Address:</strong> Purbachal American City,
+                        Kanchan,
+                        Rupganj,
+                        Narayanganj-1461, Dhaka, Bangladesh</p>
+                </div>
+
+                <form class="contact-form" onsubmit="event.preventDefault(); Helps();">
+                    <input type="text" id="contactName" placeholder="Your Name" required>
+                    <input type="email" id="contactEmail" placeholder="Your Email" required>
+                    <textarea id="contactMessage" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                    <div id="form-status"></div>
+                </form>
+
+
+                <p id="form-status"></p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 The FoodieHub. All rights reserved.</p>
+        <p>Contact us: support@mahin.com | +8801722294727</p>
+    </footer>
+    <script>
+
+        const sliderTrack = document.querySelector('.slider-track');
+        const images = Array.from(sliderTrack.children);
+        const imageCount = images.length;
+        let index = 0;
+
+        // Duplicate the image list to allow seamless looping
+        images.forEach(img => {
+            const clone = img.cloneNode(true);
+            sliderTrack.appendChild(clone);
+        });
+
+        function autoSlide() {
+            index += 1;
+            const imageWidth = images[0].offsetWidth + 10;
+            const maxOffset = imageWidth * imageCount;
+
+            sliderTrack.style.transition = 'transform 0.5s ease-in-out';
+            sliderTrack.style.transform = `translateX(-${index * imageWidth}px)`;
+
+            if (index >= imageCount) {
+                // Reset after short delay to avoid visible jump
+                setTimeout(() => {
+                    sliderTrack.style.transition = 'none';
+                    sliderTrack.style.transform = `translateX(0px)`;
+                    index = 0;
+                }, 500);
+            }
+        }
+
+        setInterval(autoSlide, 2000);
+
+
+        let cart = [];
+
+        const prices = {
+            // 🍔 Fast Food
+            "Cheese Burger": 130,
+            "Zinger Burger": 140,
+            "Cheese Sandwich": 80,
+            "Hot Dog": 100,
+            "Chicken Nuggets": 90,
+            "Loaded Fries": 110,
+            // 🍕 Pizzas
+            "Margherita Pizza": 220,
+            "Chicken BBQ Pizza": 260,
+            "Spicy Sausage Pizza": 250,
+            "Veggie Delight Pizza": 200,
+            "Four Cheese Pizza": 270,
+            // 🍜 Desi Dishes
+            "Chicken Biryani": 180,
+            "Beef Khichuri": 170,
+            "Egg Curry": 90,
+            "Paratha with Vegetable": 60,
+            "Grilled Chicken Roti Roll": 100,
+            // 🍰 Desserts
+            "Vanilla Ice Cream": 70,
+            "Brownie with Ice Cream": 120,
+            "Strawberry Sundae": 90,
+            "Gulab Jamun": 50,
+            "Rasmalai": 60,
+            // 🍹 Drinks
+            "Cold Coffee": 100,
+            "Lemon Mint Juice": 80,
+            "Watermelon Juice": 90,
+            "Chocolate Milkshake": 110,
+            "Iced Tea": 70,
+
+            'Cheese Burger': 130,
+            'Chicken Pizza': 120,
+            'Spicy Noodles': 90,
+            'Italian Pasta': 110,
+            'Sushi Set': 70
+        };
+
+        function addToCart(itemName) {
+            cart.push(itemName);
+            updateCartUI();
+            showCartSidebar();
+        }
+
+        function updateCartUI() {
+            const cartList = document.getElementById("cartItems");
+            const totalPriceElement = document.getElementById("totalPrice");
+            const totalItemsElement = document.getElementById("totalItems");
+
+            cartList.innerHTML = "";
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                const li = document.createElement("li");
+                li.textContent = `${index + 1}. ${item} - ${prices[item]} tk`;
+                cartList.appendChild(li);
+                total += prices[item];
+            });
+
+            totalItemsElement.textContent = cart.length;
+            totalPriceElement.textContent = total;
+        }
+
+        function updateCartUI() {
+            const cartList = document.getElementById("cartItems");
+            const totalPriceElement = document.getElementById("totalPrice");
+            const totalItemsElement = document.getElementById("totalItems");
+
+            cartList.innerHTML = "";
+
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const li = document.createElement("li");
+                li.style.display = "flex";
+                li.style.justifyContent = "space-between";
+                li.style.alignItems = "center";
+
+
+                const itemText = document.createElement("span");
+                itemText.textContent = `${item} - ${prices[item]} tk`;
+
+                const removeBtn = document.createElement("button");
+                removeBtn.textContent = "❌";
+                removeBtn.style.marginLeft = "10px";
+                removeBtn.style.color = "red";
+                removeBtn.style.cursor = "pointer";
+                removeBtn.style.fontSize = "12px";
+                removeBtn.style.padding = "2px 6px";
+                removeBtn.style.border = "none";
+                removeBtn.style.background = "transparent";
+                removeBtn.style.cursor = "pointer";
+                removeBtn.onclick = () => {
+                    removeFromCart(index);
+                };
+
+                li.appendChild(itemText);
+                li.appendChild(removeBtn);
+                cartList.appendChild(li);
+
+                total += prices[item];
+            });
+
+            totalItemsElement.textContent = cart.length;
+            totalPriceElement.textContent = total;
+        }
+
+
+        function removeFromCart(index) {
+            cart.splice(index, 1); // Remove item at given index
+            updateCartUI(); // Refresh cart UI and totals
+        }
+
+
+        function showCartSidebar() {
+            document.getElementById("cartSidebar").style.right = "0";
+        }
+
+        function closeCartSidebar() {
+            document.getElementById("cartSidebar").style.right = "-300px";
+            document.getElementById("Delivery_Details").style.display = "none";
+        }
+        // Show order form
+        function showOrderForm() {
+            if (cart.length === 0) {
+                alert("Cart is empty! Please add items to your cart before proceeding.");
+                return;
+            }
+            document.getElementById("Delivery_Details").style.display = "flex"; // Show the delivery details form
+        }
+        // Validate and confirm
+        function finalConfirmOrder() {
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerAddress = document.getElementById('customerAddress').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+
+            if (customerName && customerAddress && customerPhone) {
+                confirmOrder();
+            } else {
+                alert('Please fill in all delivery details.');
+            }
+        }
+        // Show popup and clear cart
+        function confirmOrder() {
+            document.getElementById("Delivery_Details").style.display = "none";
+            document.getElementById("cartSidebar").style.right = "-300px";
+            document.getElementById("orderPopup").style.display = "flex";
+        }
+        // Close popup and reload
+        function closePopup() {
+            document.getElementById("orderPopup").style.display = "none";
+            location.reload();
+        }
+
+        //login part
+        let currentUser = null;
+
+        function openLogin() {
+            closeAll();
+            document.getElementById("loginPopup").style.display = "block";
+        }
+
+        function openRegister() {
+            closeAll();
+            document.getElementById("registerPopup").style.display = "block";
+        }
+
+        function openForgotPassword() {
+            closeAll();
+            document.getElementById("forgotPopup").style.display = "block";
+        }
+
+        function closeLogin() {
+            document.getElementById("loginPopup").style.display = "none";
+        }
+
+        function closeRegister() {
+            document.getElementById("registerPopup").style.display = "none";
+        }
+
+        function closeForgotPassword() {
+            document.getElementById("forgotPopup").style.display = "none";
+        }
+
+        function closeAll() {
+            closeLogin();
+            closeRegister();
+            closeForgotPassword();
+        }
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+
+        async function fetchCurrentUser() {
+            const res = await fetch("get_user.php");
+            const data = await res.json();
+            return data;
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append("username", document.getElementById("loginUsername").value);
+            formData.append("password", document.getElementById("loginPassword").value);
+
+            const res = await fetch("login.php", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await res.text();
+
+            if (data === "invalid") {
+                alert("Incorrect password.");
+            } else if (data === "not_found") {
+                alert("User not found.");
+            } else {
+                currentUser = JSON.parse(data);
+                alert("Login successful!");
+                closeLogin();
+                document.querySelector("#loginbutton").style.display = "none";
+                document.getElementById("userDisplay").textContent = currentUser.name;
+                document.getElementById("userDisplay").style.display = "inline-block";
+                document.getElementById("userDisplay").onclick = () => openUserSidebar();
+            }
+        }
+
+        window.onload = async function () {
+            currentUser = await fetchCurrentUser();
+            if (currentUser && currentUser.name) {
+                displayUserProfile(currentUser);
+                document.getElementById("userDisplay").textContent = currentUser.name;
+                document.getElementById("userDisplay").style.display = "inline-block";
+            } else {
+                document.getElementById("userProfile").style.display = "none";
+            }
+        };
+
+        function displayUserProfile(user) {
+            document.getElementById("userNameDisplay").textContent = `Welcome, ${user.name}`;
+            document.getElementById("profileName").textContent = user.name;
+            document.getElementById("profileEmail").textContent = user.gmail;
+            document.getElementById("profileAddress").textContent = user.address;
+            document.getElementById("profilePhone").textContent = user.phone;
+            document.getElementById("userProfile").style.display = "block";
+        }
+
+        function logout() {
+            fetch("logout.php").then(() => {
+                alert("You have been logged out.");
+                window.location.reload();
+            });
+        }
+
+        async function openUserSidebar() {
+            const user = await fetchCurrentUser();
+            if (!user || !user.name) return;
+
+            document.getElementById("viewFullName").textContent = user.name;
+            document.getElementById("viewUsername").textContent = user.username;
+            document.getElementById("viewGmail").textContent = user.gmail;
+            document.getElementById("viewAddress").textContent = user.address;
+            document.getElementById("viewPhone").textContent = user.phone;
+
+            document.getElementById("userInfoView").style.display = "block";
+            document.getElementById("userInfoEditForm").style.display = "none";
+            document.getElementById("userSidebar").style.right = "0";
+        }
+
+        function closeUserSidebar() {
+            document.getElementById("userSidebar").style.right = "-400px";
+        }
+
+        async function editUserInfo() {
+            const user = await fetchCurrentUser();
+            if (!user || !user.name) return;
+
+            document.getElementById("editFullName").value = user.name;
+            document.getElementById("editUsername").value = user.username;
+            document.getElementById("editGmail").value = user.gmail;
+            document.getElementById("editAddress").value = user.address;
+            document.getElementById("editPhone").value = user.phone;
+
+            document.getElementById("userInfoView").style.display = "none";
+            document.getElementById("userInfoEditForm").style.display = "block";
+        }
+
+        async function saveUserInfo(event) {
+            event.preventDefault();
+
+            const updatedUser = {
+                name: document.getElementById("editFullName").value,
+                username: document.getElementById("editUsername").value,
+                gmail: document.getElementById("editGmail").value,
+                address: document.getElementById("editAddress").value,
+                phone: document.getElementById("editPhone").value,
+            };
+
+            const formData = new FormData();
+            for (const key in updatedUser) {
+                formData.append(key, updatedUser[key]);
+            }
+
+            const res = await fetch("update_user.php", {
+                method: "POST",
+                body: formData,
+            });
+
+            const result = await res.text();
+            if (result === "success") {
+                alert("Information updated successfully!");
+                openUserSidebar();
+            } else {
+                alert("Failed to update information.");
+            }
+        }
+
+        function cancelEdit() {
+            document.getElementById("userInfoView").style.display = "block";
+            document.getElementById("userInfoEditForm").style.display = "none";
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append("name", document.getElementById("fullName").value);
+            formData.append("username", document.getElementById("username").value);
+            formData.append("gmail", document.getElementById("gmail").value);
+            formData.append("password", document.getElementById("password").value);
+            formData.append("address", document.getElementById("address").value);
+            formData.append("phone", document.getElementById("phone").value);
+
+            fetch("register.php", {
+                method: "POST",
+                body: formData,
+            })
+                .then(res => res.text())
+                .then(data => {
+                    if (data === "success") {
+                        alert("Registration successful!");
+                        closeRegister();
+                        openLogin();
+                    } else {
+                        alert("Registration failed.");
+                    }
+                });
+        }
+
+        function sendResetCode() {
+            alert("Reset code sent to your email!");
+        }
+
+        //search function
+        const searchInput = document.getElementById('searchInput');
+
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const items = document.querySelectorAll('.food_item .food');
+            let firstMatch = null;
+
+            items.forEach(item => {
+                const name = item.querySelector('h3').innerText.toLowerCase();
+
+                if (name.includes(searchTerm) && searchTerm !== "") {
+                    item.style.border = '2px solid red';
+                    item.style.backgroundColor = '#ffe6e6';
+                    if (!firstMatch) firstMatch = item;
+                } else {
+                    item.style.border = '';
+                    item.style.backgroundColor = '';
+                }
+            });
+
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+
+
+        // Sent Message 
+        function Helps() {
+            const name = document.getElementById("contactName").value;
+            const email = document.getElementById("contactEmail").value;
+            const message = document.getElementById("contactMessage").value;
+
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("email", email);
+            formData.append("message", message);
+
+            fetch("save_contact.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(res => res.text())
+                .then(data => {
+                    if (data === "success") {
+                        document.getElementById("form-status").textContent = "✅ Message sent successfully!";
+                        document.querySelector(".contact-form").reset();
+                    } else {
+                        document.getElementById("form-status").textContent = "❌ Failed to send message.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("form-status").textContent = "❌ An error occurred.";
+                });
+        }
+
+
+    </script>
+
+</body>
+
+</html>
