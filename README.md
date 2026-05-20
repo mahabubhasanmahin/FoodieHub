@@ -9,15 +9,11 @@
 Modern restaurant and food ordering web application with responsive UI and smart food management features.
 
 ---
-
-## 🌐 Live Demo
-
 ## 🌐 Live Demo
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-000?style=for-the-badge&logo=netlify&logoColor=white)](https://onlinefoodorderingsystemh.netlify.app/)
 
 ---
-
 ## 🚀 Features
 
 - 🍔 Food Ordering System
@@ -109,13 +105,6 @@ FoodieHub/
 ```
 
 ---
-
-## 👨‍💻 Author
-
-MD Mahabub Hasan Mahin
-
-- 🌐 Portfolio: https://mahabubhasanmahin.netlify.app/
-- 💻 GitHub: https://github.com/mahabubhasanmahin
 
 ---
 
